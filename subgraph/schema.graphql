@@ -1,0 +1,20 @@
+type Record @entity {
+  id: ID!
+  recordId: BigInt!
+  patientId: BigInt!
+  creator: Bytes!
+  cid: String!
+  sha256sum: Bytes!
+  version: Int!
+  createdAt: BigInt!
+  parentRecordId: BigInt
+}
+
+type AccessGrant @entity {
+  id: ID!
+  recordId: BigInt!
+  grantee: Bytes!
+  purposeCode: Bytes!
+  expiry: BigInt!
+  active: Boolean!
+}

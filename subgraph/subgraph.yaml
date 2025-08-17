@@ -1,0 +1,48 @@
+specVersion: 0.0.6
+schema:
+  file: ./schema.graphql
+
+dataSources:
+  - kind: ethereum
+    name: RecordManager
+    network: polygon-amoy
+    source:
+      address: "{{RECORD_MANAGER_ADDRESS}}"
+      abi: RecordManager
+      startBlock: 0
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - Record
+      abis:
+        - name: RecordManager
+          file: ../ocpr-contracts/out/RecordManager.sol/RecordManager.json
+      eventHandlers:
+        - event: RecordCreated(indexed uint256,indexed uint256,string,bytes32,uint32,address)
+          handler: handleRecordCreated
+      file: ./src/mapping.ts
+
+  - kind: ethereum
+    name: AccessManager
+    network: polygon-amoy
+    source:
+      address: "{{ACCESS_MANAGER_ADDRESS}}"
+      abi: AccessManager
+      startBlock: 0
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - AccessGrant
+      abis:
+        - name: AccessManager
+          file: ../ocpr-contracts/out/AccessManager.sol/AccessManager.json
+      eventHandlers:
+        - event: AccessGranted(indexed uint256,indexed address,indexed bytes32,uint64)
+          handler: handleAccessGranted
+        - event: AccessRevoked(indexed uint256,indexed address)
+          handler: handleAccessRevoked
+      file: ./src/mapping.ts

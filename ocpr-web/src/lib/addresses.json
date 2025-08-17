@@ -1,0 +1,8 @@
+{
+  "network": "polygon-amoy",
+  "chainId": "80002",
+  "PatientRegistry": "",
+  "RecordManager": "",
+  "AccessManager": "",
+  "KeyManager": ""
+}
