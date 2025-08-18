@@ -1,6 +1,9 @@
 import React from 'react';
 import './globals.css';
 import { WalletProvider } from '@/lib/wallet';
+import Navbar from '@/components/Navbar';
+import Footer from '@/components/Footer';
+import ToastProvider from '@/components/providers/ToastProvider';
 
 export const metadata = {
   title: 'OCPR - On-Chain Patient Records',
@@ -10,16 +13,12 @@ export const metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body>
+      <body className="min-h-dvh bg-slate-50">
         <WalletProvider>
-        <header style={{padding:'12px 16px', borderBottom:'1px solid #eee', display:'flex', justifyContent:'space-between'}}>
-          <div style={{fontWeight:700}}>OCPR</div>
-          <nav style={{display:'flex', gap:12}}>
-            <a href="/">Patient Dashboard</a>
-            <a href="/clinician">Clinician Portal</a>
-          </nav>
-        </header>
-        <main style={{maxWidth:980, margin:'24px auto', padding:'0 16px'}}>{children}</main>
+          <ToastProvider />
+          <Navbar />
+          <main className="container-px mx-auto max-w-6xl py-8">{children}</main>
+          <Footer />
         </WalletProvider>
       </body>
     </html>
