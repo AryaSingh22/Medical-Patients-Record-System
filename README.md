@@ -1,112 +1,162 @@
-# Medical Patients Record System
+# 🏥 On-Chain Patient Records (OCPR)
 
-A monorepo for a secure, gas-optimized Medical Patients Record System consisting of:
+A **secure, privacy-aware medical record system** built as a monorepo.  
+The system combines **Solidity smart contracts**, a **Next.js web frontend**, and a **Graph subgraph** to enable **patient-controlled access** to encrypted medical records.
 
-- `ocpr-contracts/` — Solidity smart contracts (Foundry) with patient-scoped access control, pausable operations, and audit logging.
-- `ocpr-web/` — Next.js frontend for interacting with the contracts.
-- `subgraph/` — The Graph subgraph for indexing on-chain data.
+---
 
-## Repository Structure
+## 🚀 Project Overview
 
-- `ocpr-contracts/`
-  - Contracts: `AccessManager.sol`, `RecordManager.sol`, `PatientRegistry.sol`, `KeyManager.sol`, `AuditLog.sol`
-  - Tests: Foundry (forge-std)
-  - Scripts: `script/Deploy.s.sol`
-- `ocpr-web/`
-  - Next.js app and hooks
-  - ABIs in `src/abi/`
-- `subgraph/`
-  - `schema.graphql`, `mapping.ts`, and config files
+- **Patients register on-chain** with salted-hash PII and optional DID.
+- **Medical records** are encrypted off-chain, stored in IPFS, and referenced on-chain with CIDs + checksums.
+- **Access control** is patient-scoped, role-based, and time-limited.
+- **Audit logs** are emitted for every sensitive action and indexed via The Graph.
+- **Frontend** provides a wallet-based UI for patients and providers.
 
-## Prerequisites
+---
 
-- Git
-- Node.js 18+
-- Foundry (forge & cast): https://book.getfoundry.sh/getting-started/installation
-- (Optional) graph-cli for subgraph deployments
+## 📂 Repository Structure
 
-## Quick Start
+ocpr/
+├── ocpr-contracts/ # Solidity contracts
+│ ├── src/
+│ │ ├── PatientRegistry.sol
+│ │ ├── AccessManager.sol
+│ │ ├── RecordManager.sol
+│ │ ├── AuditLog.sol
+│ │ └── KeyManager.sol
+│ ├── foundry.toml
+│ └── script/Deploy.s.sol
+│
+├── ocpr-web/ # Next.js web app
+│ ├── src/abi/
+│ ├── package.json
+│ └── .env.example
+│
+└── subgraph/ # The Graph subgraph
+├── schema.graphql
+├── subgraph.yaml
+└── src/mapping.ts
 
-### 1) Contracts — `ocpr-contracts/`
+---
 
-Install dependencies (OpenZeppelin v5 is referenced via remappings):
+## ⚙️ Components
 
-```powershell
-# Windows PowerShell
-# from: c:\Pro\Medical Patients Record System\ocpr-contracts
-forge install OpenZeppelin/openzeppelin-contracts@v5.0.2 --no-commit
-```
+### 📝 Smart Contracts (`ocpr-contracts/`)
+- **PatientRegistry.sol** – Registers patients, salted-hash PII, linkable DID
+- **AccessManager.sol** – Patient-scoped RBAC with expiries and roles (`TREAT_ROLE`)
+- **RecordManager.sol** – Encrypted record pointers (IPFS CIDs + checksum)
+- **AuditLog.sol** – Append-only event sink
+- **KeyManager.sol** – Utility contract
 
-Build and test:
+🔒 Security Features:
+- OpenZeppelin v5 (`Ownable`, `AccessControl`, `Pausable`)
+- Custom errors + gas-conscious struct ordering
+- Audit logs on every grant/revoke/record change
 
-```powershell
-forge build
-forge test -vv
-```
+---
 
-Deploy (optional):
+### 🌐 Web App (`ocpr-web/`)
+- **Next.js 14** + **React 18**
+- Uses **Wagmi, Viem, Ethers** for wallet → smart contract interaction
+- Features:
+  - Connect wallet & register patient
+  - Link DID identity
+  - Grant/revoke provider access
+  - Create & update encrypted medical records
+  - Fetch accessible records with RBAC checks
 
-```powershell
-# Set your PRIVATE_KEY and an RPC URL (example vars)
-$env:PRIVATE_KEY = "0xYOUR_PRIVATE_KEY"
-$env:AMOY_RPC_URL = "https://polygon-amoy.g.alchemy.com/v2/xxxxxxxx"
-
-forge script script/Deploy.s.sol --rpc-url $env:AMOY_RPC_URL --broadcast
-```
-
-Notes:
-- `AccessManager` enforces `onlyRole(DEFAULT_ADMIN_ROLE)` and `whenNotPaused` on grant/revoke.
-- Reverts: "Invalid grantee", "Invalid expiry", and OZ v5 `Pausable.EnforcedPause`.
-
-### 2) Web App — `ocpr-web/`
-
-```powershell
-# from: c:\Pro\Medical Patients Record System\ocpr-web
-Copy-Item .env.example .env.local
-# edit .env.local for RPC, chainId, addresses, API keys
-
+**Run locally**:
+cd ocpr-web
+cp .env.example .env.local # Set RPC, chainId, addresses, API keys
 npm install
 npm run dev
-# open http://localhost:3000
-```
 
-Update deployed contract addresses and ABIs in `ocpr-web/src/abi/` as needed.
+---
 
-### 3) Subgraph — `subgraph/`
+### 📊 Subgraph (`subgraph/`)
+- **Indexes smart contract events** → patient regs, grants/revokes, record updates, audit logs
+- Files: `schema.graphql`, `subgraph.yaml`, `src/mapping.ts`
 
-```powershell
-# from: c:\Pro\Medical Patients Record System\subgraph
+**Run locally**:
+cd subgraph
 npm install
 npm run codegen
 npm run build
-```
+npm run test
 
-(Optional) Deploy with graph-cli:
+---
 
-```powershell
-graph auth --studio <YOUR_TOKEN>
-graph deploy --studio <SUBGRAPH_NAME>
-```
+## 🔑 Data & Access Model
 
-## Linting & Formatting
+- **Patient Identity (PatientRegistry):**
+  - `patientId`, wallet-bound ownership, salted-hash name/dob, optional DID
 
-- Solidity: follows Foundry defaults; maintain imports and NatSpec per OZ best practices.
-- TypeScript/JS: use project defaults in `ocpr-web/`.
+- **Records (RecordManager):**
+  - Metadata = encrypted `CID`, `sha256sum`, version, lineage tracking  
+  - Only patient-owner can create/update; reads require RBAC
 
-## Security & Design Highlights
+- **Per-Patient RBAC (AccessManager):**
+  - Role-based (`TREAT_ROLE`) with per-user expiry
+  - Admins (`DEFAULT_ADMIN_ROLE`) manage grants/revokes
 
-- Patient-scoped RBAC with expiries per `AccessManager`.
-- `Pausable` emergency stop across critical functions.
-- `AuditLog` for traceability of grants/revokes and record mutations.
-- Gas-conscious struct ordering and custom errors.
+- **Audit Trail (AuditLog):**
+  - Append-only events for every sensitive action
 
-## Contributing
+---
 
-1. Create a feature branch.
-2. Add tests for any changes (contracts: Foundry).
-3. Ensure `forge test` passes.
-4. Open a PR with a clear description and rationale.
+## 🔒 Security & Privacy
 
-## License
+- **No raw PII on-chain** — only salted-hashes  
+- **All records encrypted client-side before IPFS upload**  
+- **Wallet ownership = patient authority** (`ownerOfPatient`)  
+- **System-wide pause switch** in case of emergency  
+- **100% auditability** via events + The Graph  
 
-MIT
+---
+
+## 🛠️ Development Workflow
+
+### Contracts
+cd ocpr-contracts
+forge build
+forge test -vv
+
+Deploy:
+AMOY_RPC_URL=<rpc-url> PRIVATE_KEY=<your-key> forge script script/Deploy.s.sol
+
+### Web Frontend
+cd ocpr-web
+npm install
+npm run dev
+
+### Subgraph
+cd subgraph
+npm install
+npm run codegen
+npm run build
+npm run test
+
+---
+
+## 🧰 Tech Stack
+
+- **Smart Contracts:** Solidity (0.8.19–0.8.24), OpenZeppelin v5, Foundry  
+- **Frontend:** Next.js 14, React 18, Wagmi / Viem / Ethers 6, Zustand, React Query  
+- **Indexing:** The Graph CLI, AssemblyScript, Matchstick  
+
+---
+
+## 📝 Summary
+
+The **On-Chain Patient Records system** delivers a full-stack, privacy-preserving framework for decentralized medical data:
+
+- Patients register & link **DIDs**  
+- Data owners manage access with **RBAC & expiry**  
+- Encrypted pointers stored **off-chain but tracked immutably on-chain**  
+- All actions are **auditable and indexable**  
+- Next.js frontend + The Graph explorer provide real usability  
+
+✅ Designed for **research, auditing, and production-ready healthcare systems**.
+
+---
