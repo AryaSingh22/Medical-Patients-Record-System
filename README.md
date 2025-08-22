@@ -67,10 +67,10 @@ ocpr/
   - Fetch accessible records with RBAC checks
 
 **Run locally**:
-cd ocpr-web
-cp .env.example .env.local # Set RPC, chainId, addresses, API keys
-npm install
-npm run dev
+ cd ocpr-web
+ cp .env.example .env.local # Set RPC, chainId, addresses, API keys
+ npm install
+ npm run dev
 
 ---
 
