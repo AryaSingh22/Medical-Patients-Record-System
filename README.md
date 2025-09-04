@@ -82,7 +82,7 @@ ocpr/
 cd subgraph
 npm install
 npm run codegen
-npm run build
+npm run build    
 npm run test
 
 ---
