@@ -35,7 +35,7 @@ ocpr/
 │
 └── subgraph/ # The Graph subgraph
 ├── schema.graphql
-├── subgraph.yaml
+├── subgraph.yaml   
 └── src/mapping.ts
 
 ---
@@ -47,7 +47,7 @@ ocpr/
 - **AccessManager.sol** – Patient-scoped RBAC with expiries and roles (`TREAT_ROLE`)
 - **RecordManager.sol** – Encrypted record pointers (IPFS CIDs + checksum)
 - **AuditLog.sol** – Append-only event sink
-- **KeyManager.sol** – Utility contract
+- **KeyManager.sol** – Utility contract    
 
 🔒 Security Features:
 - OpenZeppelin v5 (`Ownable`, `AccessControl`, `Pausable`)
