@@ -22,7 +22,7 @@ contract Deploy is Script {
         AuditLog audit = new AuditLog();
 
         AccessManager am = new AccessManager(
-            deployer,    // owner
+            deployer,    // owner 
             deployer,    // admin
             audit        // audit log
         );
