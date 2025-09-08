@@ -7,7 +7,7 @@ import {RecordManager} from "../src/RecordManager.sol";
 import {AccessManager} from "../src/AccessManager.sol";
 import {KeyManager} from "../src/KeyManager.sol";
 import {PatientRegistry} from "../src/PatientRegistry.sol";
-import {AuditLog} from "../src/AuditLog.sol";
+import {AuditLog} from "../src/AuditLog.sol"; 
 
 contract Deploy is Script {
     function run() external {
