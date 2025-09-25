@@ -12,7 +12,7 @@ contract KeyManager {
  
     RecordManager public immutable RECORD_MANAGER;
     PatientRegistry public immutable PATIENT_REGISTRY;
- 
+  
     // patientId => viewer => key CID (encrypted)
     mapping(uint256 => mapping(address => string)) private _keyPointers;
 
