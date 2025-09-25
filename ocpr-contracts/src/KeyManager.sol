@@ -21,7 +21,7 @@ contract KeyManager {
         RECORD_MANAGER = rm;
         PATIENT_REGISTRY = pr;
     }
-
+ 
     /// @notice Set a key pointer for a viewer. Only patient owner may call.
     function setKeyPointer(uint256 patientId, address viewer, string calldata keyCid) external {
         if (viewer == address(0)) revert ZeroAddress();
