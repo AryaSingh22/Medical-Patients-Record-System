@@ -6,7 +6,7 @@ import {AccessControl} from "@openzeppelin/contracts/access/AccessControl.sol";
 import {Pausable} from "@openzeppelin/contracts/utils/Pausable.sol";
 import {IAccessManager} from "../access/IAccessManager.sol"; 
 import {AuditLog} from "./AuditLog.sol";  
-
+ 
 /// @title AccessManager
 /// @notice Patient-scoped role-based access control with expiry for medical records.
 contract AccessManager is Ownable, AccessControl, Pausable, IAccessManager {
