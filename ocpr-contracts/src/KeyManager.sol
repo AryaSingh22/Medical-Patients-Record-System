@@ -9,7 +9,7 @@ import {PatientRegistry} from "./PatientRegistry.sol";
 contract KeyManager {     
     error ZeroAddress();
     error NotPatientOwner();
- 
+   
     RecordManager public immutable RECORD_MANAGER;
     PatientRegistry public immutable PATIENT_REGISTRY;
   
