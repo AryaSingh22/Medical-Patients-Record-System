@@ -5,7 +5,7 @@ import {RecordManager} from "./RecordManager.sol";
 import {PatientRegistry} from "./PatientRegistry.sol";
 
 /// @title KeyManager
-/// @notice Stores pointers to encrypted per-viewer keys for a patient.
+/// @notice Stores pointers to encrypted per-viewer keys for a patient. 
 contract KeyManager {     
     error ZeroAddress();
     error NotPatientOwner();
