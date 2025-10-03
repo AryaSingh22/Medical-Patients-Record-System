@@ -8,7 +8,7 @@ import {PatientRegistry} from "./PatientRegistry.sol";
 /// @notice Stores pointers to encrypted per-viewer keys for a patient. 
 contract KeyManager {     
     error ZeroAddress();
-    error NotPatientOwner();
+    error NotPatientOwner(); 
    
     RecordManager public immutable RECORD_MANAGER;
     PatientRegistry public immutable PATIENT_REGISTRY;
