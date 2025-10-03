@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.19;
 
-import {RecordManager} from "./RecordManager.sol";
+import {RecordManager} from "./RecordManager.sol"; 
 import {PatientRegistry} from "./PatientRegistry.sol";
 
 /// @title KeyManager
