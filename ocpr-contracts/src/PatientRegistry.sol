@@ -13,7 +13,7 @@ import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
 contract PatientRegistry is Ownable {
     error AlreadyRegistered();
     error NotRegistered();
-    error NoSuchPatient();
+    error NoSuchPatient(); 
     error InvalidInput();
 
     // Gas-friendly ordering. Dynamic string last.
