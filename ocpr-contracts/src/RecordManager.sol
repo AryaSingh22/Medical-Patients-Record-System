@@ -14,7 +14,7 @@ import {AuditLog} from "./AuditLog.sol";
  * - All personally identifiable information (PII) must be salted-hashed before being stored on-chain.
  * - All record contents must be encrypted off-chain prior to upload (e.g., to IPFS). Only encrypted CIDs are stored here.
  */
-contract RecordManager is Ownable, Pausable {
+contract RecordManager is Ownable, Pausable { 
     error ZeroAddress();
     error NotPatientOwner();
     error NoRecord();
