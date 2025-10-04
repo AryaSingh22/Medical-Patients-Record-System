@@ -2,7 +2,7 @@
 pragma solidity ^0.8.19;
 
 import {Script} from "forge-std/Script.sol";
-import {console} from "forge-std/console.sol";
+import {console} from "forge-std/console.sol"; 
 import {RecordManager} from "../src/RecordManager.sol";
 import {AccessManager} from "../src/AccessManager.sol";
 import {KeyManager} from "../src/KeyManager.sol"; 
