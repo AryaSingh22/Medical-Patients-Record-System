@@ -17,7 +17,7 @@ import {AuditLog} from "./AuditLog.sol";
 contract RecordManager is Ownable, Pausable { 
     error ZeroAddress();
     error NotPatientOwner();
-    error NoRecord();
+    error NoRecord(); 
     error InvalidInput();
 
     // Gas-optimized ordering: pack smaller types; keep dynamic types separate
