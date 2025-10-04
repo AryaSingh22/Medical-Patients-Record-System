@@ -15,7 +15,7 @@ import {AuditLog} from "./AuditLog.sol";
  * - All record contents must be encrypted off-chain prior to upload (e.g., to IPFS). Only encrypted CIDs are stored here.
  */
 contract RecordManager is Ownable, Pausable { 
-    error ZeroAddress();
+    error ZeroAddress(); 
     error NotPatientOwner();
     error NoRecord(); 
     error InvalidInput();
