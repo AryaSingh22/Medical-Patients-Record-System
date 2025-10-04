@@ -10,7 +10,7 @@ import {AuditLog} from "./AuditLog.sol";
 /**
  * @title RecordManager
  * @notice Stores metadata pointers to encrypted patient records.
- * @dev
+ * @dev 
  * - All personally identifiable information (PII) must be salted-hashed before being stored on-chain.
  * - All record contents must be encrypted off-chain prior to upload (e.g., to IPFS). Only encrypted CIDs are stored here.
  */
