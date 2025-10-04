@@ -21,7 +21,7 @@ contract RecordManager is Ownable, Pausable {
     error InvalidInput();
 
     // Gas-optimized ordering: pack smaller types; keep dynamic types separate
-    struct Record {
+    struct Record { 
         uint256 recordId;
         uint256 patientId;
         uint256 parentRecordId; // 0 if none
