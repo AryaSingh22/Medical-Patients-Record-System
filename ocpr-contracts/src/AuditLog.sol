@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.24;
 
-// Placeholder contract for future compact hash-based audit entries.
+// Placeholder contract for future compact hash-based audit entries. 
 contract AuditLog {
     event Audit(bytes32 indexed actionHash, address indexed actor, uint64 ts);   
 
