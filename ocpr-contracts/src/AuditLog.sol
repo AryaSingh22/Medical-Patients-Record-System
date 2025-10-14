@@ -7,5 +7,5 @@ contract AuditLog {
 
     function emitAudit(bytes32 actionHash) external { 
         emit Audit(actionHash, msg.sender, uint64(block.timestamp));     
-    }
+    } 
 }   
