@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.24;
+pragma solidity ^0.8.24; 
 
 // Placeholder contract for future compact hash-based audit entries. 
 contract AuditLog {
