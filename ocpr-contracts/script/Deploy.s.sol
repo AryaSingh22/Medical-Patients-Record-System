@@ -16,7 +16,7 @@ contract Deploy is Script {
         address deployer = vm.addr(deployerPrivateKey); 
         
         vm.startBroadcast(deployerPrivateKey);
-
+ 
         // Deploy in order
         PatientRegistry pr = new PatientRegistry();
         AuditLog audit = new AuditLog();
