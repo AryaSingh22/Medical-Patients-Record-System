@@ -2,7 +2,7 @@
 pragma solidity ^0.8.19;
 
 import {RecordManager} from "./RecordManager.sol"; 
-import {PatientRegistry} from "./PatientRegistry.sol"; 
+import {PatientRegistry} from "./PatientRegistry.sol";  
 
 /// @title KeyManager 
 /// @notice Stores pointers to encrypted per-viewer keys for a patient. 
