@@ -9,7 +9,7 @@ import {KeyManager} from "../src/KeyManager.sol";
 import {PatientRegistry} from "../src/PatientRegistry.sol";   
 import {AuditLog} from "../src/AuditLog.sol";   
 
-contract Deploy is Script {
+contract Deploy is Script { 
     function run() external { 
         // Load deployment key 
         uint256 deployerPrivateKey = vm.envUint("PRIVATE_KEY");  
