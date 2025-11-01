@@ -2,7 +2,7 @@
 pragma solidity ^0.8.24;
 
 import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
- 
+  
 /**
  * @title PatientRegistry
  * @notice Registers patients and links wallet ownership to patient IDs.
