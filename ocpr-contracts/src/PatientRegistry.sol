@@ -5,7 +5,7 @@ import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
    
 /**
  * @title PatientRegistry
- * @notice Registers patients and links wallet ownership to patient IDs.
+ * @notice Registers patients and links wallet ownership to patient IDs. 
  * @dev
  * - All personally identifiable information (PII) must be salted-hashed before being stored on-chain.
  * - Any off-chain patient data stored alongside on-chain references must be encrypted prior to upload.  
