@@ -4,7 +4,7 @@ pragma solidity ^0.8.24;
 import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
    
 /**
- * @title PatientRegistry
+ * @title PatientRegistry 
  * @notice Registers patients and links wallet ownership to patient IDs. 
  * @dev
  * - All personally identifiable information (PII) must be salted-hashed before being stored on-chain.
