@@ -12,7 +12,7 @@ import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
  */
 contract PatientRegistry is Ownable {  
     error AlreadyRegistered();
-    error NotRegistered(); //registered
+    error NotRegistered();
     error NoSuchPatient(); 
     error InvalidInput();
 
