@@ -16,7 +16,7 @@ contract AccessManager is Ownable, AccessControl, Pausable, IAccessManager {
     error InvalidExpiry();
 
     // Roles
-    bytes32 public constant TREAT_ROLE = keccak256("TREAT"); 
+    bytes32 public constant TREAT_ROLE = keccak256("TREAT");
     bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
 
     // Optional integration variable (not required for checks but kept for integration visibility)
