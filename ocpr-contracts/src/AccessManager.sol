@@ -10,7 +10,7 @@ import {AuditLog} from "./AuditLog.sol";
 /// @title AccessManager
 /// @notice Patient-scoped role-based access control with expiry for medical records.
 contract AccessManager is Ownable, AccessControl, Pausable, IAccessManager {
-    // Errors
+    // Errors 
     error ZeroAddress(); 
     error InvalidRole();
     error InvalidExpiry();
