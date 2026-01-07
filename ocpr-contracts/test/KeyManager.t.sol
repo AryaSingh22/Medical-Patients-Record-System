@@ -23,7 +23,7 @@ contract KeyManagerTest is Test {
     function setUp() public {
         pr = new PatientRegistry();
         audit = new AuditLog();
-        am = new AccessManager(owner, admin, audit);
+        am = new AccessManager(owner, admin, audit, pr);
         rm = new RecordManager(owner, pr, am, audit);
         km = new KeyManager(rm, pr);
 
