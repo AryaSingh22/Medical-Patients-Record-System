@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.24
+pragma solidity ^0.8.24;
 
 // Placeholder contract for future compact hash-based audit entries.
 contract AuditLog {
@@ -8,4 +8,4 @@ contract AuditLog {
     function emitAudit(bytes32 actionHash) external {
         emit Audit(actionHash, msg.sender, uint64(block.timestamp));
     } 
-}   
+}

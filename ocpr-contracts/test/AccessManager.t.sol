@@ -26,7 +26,7 @@ contract AccessManagerTest is Test {
 
         pr = new PatientRegistry();
         audit = new AuditLog();
-        am = new AccessManager(owner, admin, audit);
+        am = new AccessManager(owner, admin, audit, pr);
 
         // Register Alice as patient 1
         vm.prank(alice);
@@ -41,6 +41,32 @@ contract AccessManagerTest is Test {
         vm.prank(admin);
         am.grantAccess(1, bob, am.TREAT_ROLE(), uint64(block.timestamp + 3600));
         assertTrue(am.hasAccess(1, bob, am.TREAT_ROLE()));
+    }
+
+    function testPatientOwnerCanGrantAccess() public {
+        // Alice is the owner of patient 1
+        vm.prank(alice);
+        am.grantAccess(1, bob, am.TREAT_ROLE(), uint64(block.timestamp + 3600));
+        assertTrue(am.hasAccess(1, bob, am.TREAT_ROLE()));
+    }
+
+    function testPatientOwnerCanRevokeAccess() public {
+        // Grant first
+        vm.prank(admin);
+        am.grantAccess(1, bob, am.TREAT_ROLE(), uint64(block.timestamp + 3600));
+        assertTrue(am.hasAccess(1, bob, am.TREAT_ROLE()));
+
+        // Alice revokes
+        vm.prank(alice);
+        am.revokeAccess(1, bob, am.TREAT_ROLE());
+        assertFalse(am.hasAccess(1, bob, am.TREAT_ROLE()));
+    }
+
+    function testNonOwnerCannotGrantAccess() public {
+        // Bob is not owner or admin
+        vm.prank(bob);
+        vm.expectRevert(AccessManager.Unauthorized.selector);
+        am.grantAccess(1, bob, am.TREAT_ROLE(), uint64(block.timestamp + 3600));
     }
 
     function testRevoke() public {

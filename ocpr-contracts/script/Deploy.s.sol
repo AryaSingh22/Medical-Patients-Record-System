@@ -24,7 +24,8 @@ contract Deploy is Script {
         AccessManager am = new AccessManager(
             deployer,    // owner 
             deployer,    // admin
-            audit        // audit log
+            audit,       // audit log
+            pr           // patient registry
         );
         
         RecordManager rm = new RecordManager(

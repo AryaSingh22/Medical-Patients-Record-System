@@ -6,6 +6,7 @@ import {AccessControl} from "@openzeppelin/contracts/access/AccessControl.sol";
 import {Pausable} from "@openzeppelin/contracts/utils/Pausable.sol";
 import {IAccessManager} from "../access/IAccessManager.sol";
 import {AuditLog} from "./AuditLog.sol";
+import {PatientRegistry} from "./PatientRegistry.sol";
 
 /// @title AccessManager
 /// @notice Patient-scoped role-based access control with expiry for medical records.
@@ -14,6 +15,7 @@ contract AccessManager is Ownable, AccessControl, Pausable, IAccessManager {
     error ZeroAddress(); 
     error InvalidRole();
     error InvalidExpiry();
+    error Unauthorized();
 
     // Roles
     bytes32 public constant TREAT_ROLE = keccak256("TREAT");
@@ -24,6 +26,7 @@ contract AccessManager is Ownable, AccessControl, Pausable, IAccessManager {
 
     // Audit log sink
     AuditLog public immutable AUDIT;
+    PatientRegistry public immutable PATIENT_REGISTRY;
 
     // patientId => user => role => expiry
     mapping(uint256 => mapping(address => mapping(bytes32 => uint64))) public accessExpiry;
@@ -36,14 +39,26 @@ contract AccessManager is Ownable, AccessControl, Pausable, IAccessManager {
     constructor(
         address initialOwner,
         address admin,
-        AuditLog audit
+        AuditLog audit,
+        PatientRegistry patientRegistry
     ) Ownable(initialOwner) {
         if (admin == address(0)) revert ZeroAddress();
         if (address(audit) == address(0)) revert ZeroAddress();
+        if (address(patientRegistry) == address(0)) revert ZeroAddress();
+
         AUDIT = audit;
+        PATIENT_REGISTRY = patientRegistry;
+
         // Grant roles to deployer (msg.sender)
         _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
         _grantRole(PAUSER_ROLE, msg.sender);
+    }
+
+    modifier onlyAdminOrPatientOwner(uint256 patientId) {
+        bool isAdmin = hasRole(DEFAULT_ADMIN_ROLE, msg.sender);
+        bool isPatientOwner = PATIENT_REGISTRY.ownerOfPatient(patientId) == msg.sender;
+        if (!isAdmin && !isPatientOwner) revert Unauthorized();
+        _;
     }
 
     /// @notice Set associated RecordManager address (optional wiring) and emit event.
@@ -59,7 +74,7 @@ contract AccessManager is Ownable, AccessControl, Pausable, IAccessManager {
         address user,
         bytes32 role,
         uint64 expiry
-    ) external whenNotPaused onlyRole(DEFAULT_ADMIN_ROLE) {
+    ) external whenNotPaused onlyAdminOrPatientOwner(patientId) {
         if (user == address(0)) revert ZeroAddress();
         if (expiry <= block.timestamp) revert InvalidExpiry();
         accessExpiry[patientId][user][role] = expiry;
@@ -72,7 +87,7 @@ contract AccessManager is Ownable, AccessControl, Pausable, IAccessManager {
         uint256 patientId,
         address user,
         bytes32 role
-    ) external whenNotPaused onlyRole(DEFAULT_ADMIN_ROLE) {
+    ) external whenNotPaused onlyAdminOrPatientOwner(patientId) {
         if (user == address(0)) revert ZeroAddress();
         delete accessExpiry[patientId][user][role];
         emit AccessRevoked(patientId, user, role);
@@ -86,7 +101,7 @@ contract AccessManager is Ownable, AccessControl, Pausable, IAccessManager {
         address grantee,
         bytes32 role,
         uint64 expiry
-    ) external whenNotPaused onlyRole(DEFAULT_ADMIN_ROLE) {
+    ) external whenNotPaused onlyAdminOrPatientOwner(patientId) {
         require(grantee != address(0), "Invalid grantee");
         require(expiry > block.timestamp, "Invalid expiry");
         accessExpiry[patientId][grantee][role] = expiry;
@@ -100,7 +115,7 @@ contract AccessManager is Ownable, AccessControl, Pausable, IAccessManager {
         uint256 patientId,
         address grantee,
         bytes32 role
-    ) external whenNotPaused onlyRole(DEFAULT_ADMIN_ROLE) {
+    ) external whenNotPaused onlyAdminOrPatientOwner(patientId) {
         require(grantee != address(0), "Invalid grantee");
         delete accessExpiry[patientId][grantee][role];
         emit AccessRevoked(patientId, grantee, role);

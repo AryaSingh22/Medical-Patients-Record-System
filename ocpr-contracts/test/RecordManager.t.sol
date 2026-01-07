@@ -20,7 +20,7 @@ contract RecordManagerTest is Test {
     function setUp() public {
         PATIENT_REGISTRY = new PatientRegistry();
         AUDIT = new AuditLog();
-        ACCESS_MANAGER = new AccessManager(owner, admin, AUDIT);
+        ACCESS_MANAGER = new AccessManager(owner, admin, AUDIT, PATIENT_REGISTRY);
         RECORD_MANAGER = new RecordManager(owner, PATIENT_REGISTRY, ACCESS_MANAGER, AUDIT);
         // register Alice as patient 1
         vm.prank(alice);
