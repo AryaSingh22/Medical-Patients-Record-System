@@ -1,5 +1,5 @@
 # 🏥 On-Chain Patient Records (OCPR)
-  
+
 A **secure, privacy-aware medical record system** built as a monorepo.  
 The system combines **Solidity smart contracts**, a **Next.js web frontend**, and a **Graph subgraph** to enable **patient-controlled access** to encrypted medical records.
 
